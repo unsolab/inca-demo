@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InCA Fase 1 — Demo de Dashboard Ejecutivo (Datos Sintéticos Ofuscados)</title>
+  <!-- Tailwind CSS para diseño responsivo y moderno -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tipografía Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Chart.js para gráficos interactivos -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen p-4 sm:p-6 lg:p-8">
+  <!-- Contenedor principal fluido -->
+  <div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Banner permanente de advertencia de datos sintéticos -->
+    <div role="alert" class="rounded-xl border-2 border-amber-400/70 bg-amber-500/15 px-4 py-3.5 sm:px-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 shadow-lg shadow-amber-950/30">
+      <div class="flex items-start sm:items-center gap-3">
+        <span class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-400/20 text-amber-300 font-bold text-lg" aria-hidden="true">!</span>
+        <div>
+          <p class="text-sm sm:text-base font-bold tracking-wide text-amber-200 uppercase">
+            Modo Simulación — Datos Sintéticos de Demostración
+          </p>
+          <p class="text-xs sm:text-sm text-amber-100/90 mt-0.5">
+            Todos los identificadores de ASN y métricas exhibidas están ofuscados y generados artificialmente para validar la metodología. <strong>No corresponden a organizaciones ni mediciones reales.</strong>
+          </p>
+        </div>
+      </div>
+      <span class="self-start sm:self-center shrink-0 rounded-full border border-amber-400/50 bg-amber-400/20 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-amber-200">
+        Uso Demostrativo
+      </span>
+    </div>
+
+    <!-- Encabezado ejecutivo -->
+    <header class="rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800/90 p-5 sm:p-7 shadow-xl">
+      <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+        <div>
+          <div class="flex flex-wrap items-center gap-2 mb-2">
+            <span class="rounded-md bg-sky-500/15 border border-sky-400/30 px-2.5 py-0.5 text-xs font-semibold text-sky-300 uppercase tracking-wider">
+              InCA · Fase 1 (OCDE)
+            </span>
+            <span class="rounded-md bg-amber-500/15 border border-amber-400/30 px-2.5 py-0.5 text-xs font-semibold text-amber-300 uppercase tracking-wider">
+              Identificadores Ofuscados
+            </span>
+          </div>
+          <h1 class="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight text-white">
+            Dashboard Ejecutivo de Postura por Sistema Autónomo (ASN)
+          </h1>
+          <p class="mt-1.5 text-sm text-slate-400">
+            Visualización de resultados del motor metodológico compuesto con escala fija, agregación geométrica acotada y análisis de sensibilidad.
+          </p>
+        </div>
+      </div>
+
+      <!-- Metadatos sanitizados (sin rutas internas ni claves) -->
+      <div class="mt-5 pt-4 border-t border-slate-800 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs sm:text-sm text-slate-300">
+        <div class="rounded-lg bg-slate-950/60 border border-slate-800/80 px-3 py-2">
+          <span class="block text-slate-400 text-xs uppercase tracking-wider">Origen de Datos</span>
+          <span class="font-semibold text-amber-300">Simulación Sintética (Ofuscada)</span>
+        </div>
+        <div class="rounded-lg bg-slate-950/60 border border-slate-800/80 px-3 py-2">
+          <span class="block text-slate-400 text-xs uppercase tracking-wider">Escala y Umbral Fijo</span>
+          <span class="font-semibold text-slate-100">R<sub>j</sub> = 0.25 (25% hosts activos)</span>
+        </div>
+        <div class="rounded-lg bg-slate-950/60 border border-slate-800/80 px-3 py-2">
+          <span class="block text-slate-400 text-xs uppercase tracking-wider">Agregación Oficial</span>
+          <span class="font-semibold text-slate-100">Media Geométrica Acotada (&epsilon; = 0.05)</span>
+        </div>
+        <div class="rounded-lg bg-slate-950/60 border border-slate-800/80 px-3 py-2">
+          <span class="block text-slate-400 text-xs uppercase tracking-wider">Trazabilidad</span>
+          <span class="font-semibold text-slate-100">Dataset sintético embebido (sin PII/IPs)</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Tarjetas KPI principales -->
+    <section aria-label="Indicadores resumen" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      <!-- KPI: Índice Síntesis Comparables -->
+      <div class="rounded-xl border border-sky-500/40 bg-slate-900 p-4 sm:p-5 shadow-md">
+        <div class="flex items-center justify-between gap-2">
+          <span class="text-xs font-semibold uppercase tracking-wider text-sky-300">InCA Síntesis (Demo)</span>
+          <span class="rounded bg-amber-500/20 px-1.5 py-0.5 text-[10px] font-bold text-amber-300 uppercase">Sim</span>
+        </div>
+        <div class="mt-2 text-2xl sm:text-3xl font-extrabold text-sky-400 tabular-nums">41.40 <span class="text-sm font-medium text-slate-400">/ 100</span></div>
+        <p class="mt-1 text-xs text-slate-400">Promedio equiponderado sobre 2 ASNs comparables (H<sub>a</sub> &ge; 15)</p>
+      </div>
+
+      <div class="rounded-xl border border-slate-800 bg-slate-900 p-4 sm:p-5 shadow-md">
+        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">ASNs Simulados</span>
+        <div class="mt-2 text-2xl sm:text-3xl font-extrabold text-white tabular-nums">3</div>
+        <p class="mt-1 text-xs text-slate-400">2 comparables (H<sub>a</sub> &ge; 15) · 1 baja precisión</p>
+      </div>
+
+      <div class="rounded-xl border border-slate-800 bg-slate-900 p-4 sm:p-5 shadow-md">
+        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Hosts Sintéticos (H<sub>a</sub>)</span>
+        <div class="mt-2 text-2xl sm:text-3xl font-extrabold text-white tabular-nums">44</div>
+        <p class="mt-1 text-xs text-slate-400">Universo simulado deduplicado por host</p>
+      </div>
+
+      <div class="rounded-xl border border-slate-800 bg-slate-900 p-4 sm:p-5 shadow-md">
+        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Menor PTS Comparable</span>
+        <div class="mt-2 text-2xl sm:text-3xl font-extrabold text-rose-400 tabular-nums">32.18</div>
+        <p class="mt-1 text-xs text-slate-400">AS-SIM-B · Escala autónoma [0, 100]</p>
+      </div>
+
+      <div class="rounded-xl border border-slate-800 bg-slate-900 p-4 sm:p-5 shadow-md">
+        <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Máx. Convergencia</span>
+        <div class="mt-2 text-2xl sm:text-3xl font-extrabold text-amber-300 tabular-nums">0.2500</div>
+        <p class="mt-1 text-xs text-slate-400">ISE &cap; (VULN &cup; COMP) sobre H<sub>a</sub></p>
+      </div>
+    </section>
+
+    <!-- Sección (a): Tabla desagregada por ASN -->
+    <section class="rounded-2xl border border-slate-800 bg-slate-900 p-5 sm:p-6 shadow-lg">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
+        <div>
+          <h2 class="text-lg font-bold text-white">(a) Indicadores Desagregados por Sistema Autónomo (Ofuscados)</h2>
+          <p class="text-xs sm:text-sm text-slate-400 mt-0.5">
+            Cada puntaje oficial PTS<sub>a</sub> es invariante respecto al resto de la muestra. Las unidades con H<sub>a</sub> &lt; 15 se excluyen del ranking comparativo.
+          </p>
+        </div>
+        <span class="self-start rounded-md border border-amber-400/40 bg-amber-500/10 px-2.5 py-1 text-xs font-semibold text-amber-300">
+          Datos Sintéticos · Sin Entidades Reales
+        </span>
+      </div>
+
+      <!-- Tabla de unidades comparables -->
+      <div class="overflow-x-auto rounded-xl border border-slate-800">
+        <table class="w-full text-left border-collapse text-xs sm:text-sm">
+          <thead>
+            <tr class="bg-slate-800/80 text-slate-300 uppercase text-[11px] tracking-wider">
+              <th class="px-3 py-3 font-semibold">ASN (Ofuscado)</th>
+              <th class="px-3 py-3 font-semibold">Perfil Sintético</th>
+              <th class="px-3 py-3 font-semibold text-right">H<sub>a</sub></th>
+              <th class="px-3 py-3 font-semibold">Estabilidad Muestral</th>
+              <th class="px-3 py-3 font-semibold text-right">PTS Oficial</th>
+              <th class="px-3 py-3 font-semibold text-right">Riesgo</th>
+              <th class="px-3 py-3 font-semibold text-right">Conv<sub>a</sub> / IC 95%</th>
+              <th class="px-3 py-3 font-semibold text-right">IC 95% COMP</th>
+              <th class="px-3 py-3 font-semibold text-right">Sensibilidad [Min, Max]</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800">
+            <tr class="hover:bg-slate-800/40 transition-colors">
+              <td class="px-3 py-3 font-bold text-white whitespace-nowrap">AS-SIM-B</td>
+              <td class="px-3 py-3 text-slate-200">Red Simulada B (Compromiso Crítico Concentrado)</td>
+              <td class="px-3 py-3 text-right tabular-nums font-medium">16</td>
+              <td class="px-3 py-3">
+                <span class="inline-block rounded-md border border-sky-400/35 bg-sky-500/15 px-2 py-0.5 text-[11px] font-medium text-sky-200">
+                  PRECISION_MODERADA (15 &le; H<sub>a</sub> &lt; 100)
+                </span>
+              </td>
+              <td class="px-3 py-3 text-right tabular-nums">
+                <span class="inline-block rounded-full bg-rose-500/20 border border-rose-400/30 px-2.5 py-0.5 font-bold text-rose-300">32.18</span>
+              </td>
+              <td class="px-3 py-3 text-right tabular-nums text-slate-300">0.6782</td>
+              <td class="px-3 py-3 text-right tabular-nums">
+                <div class="font-medium text-slate-100">0.2500</div>
+                <div class="text-[11px] text-slate-400">IC95 [0.102, 0.495]</div>
+              </td>
+              <td class="px-3 py-3 text-right tabular-nums text-slate-300">[0.142, 0.556]</td>
+              <td class="px-3 py-3 text-right tabular-nums">
+                <div class="font-medium text-slate-100">[23.23, 63.54]</div>
+                <div class="text-[11px] text-slate-400">&Delta; 40.31 pts</div>
+              </td>
+            </tr>
+            <tr class="hover:bg-slate-800/40 transition-colors">
+              <td class="px-3 py-3 font-bold text-white whitespace-nowrap">AS-SIM-A</td>
+              <td class="px-3 py-3 text-slate-200">
+                Red Simulada A (Postura Intermedia Multi-Nivel)
+                <div class="text-[11px] text-slate-400 mt-0.5">Honeypots simulados en H<sub>a</sub>: 1</div>
+              </td>
+              <td class="px-3 py-3 text-right tabular-nums font-medium">20</td>
+              <td class="px-3 py-3">
+                <span class="inline-block rounded-md border border-sky-400/35 bg-sky-500/15 px-2 py-0.5 text-[11px] font-medium text-sky-200">
+                  PRECISION_MODERADA (15 &le; H<sub>a</sub> &lt; 100)
+                </span>
+              </td>
+              <td class="px-3 py-3 text-right tabular-nums">
+                <span class="inline-block rounded-full bg-orange-500/20 border border-orange-400/30 px-2.5 py-0.5 font-bold text-orange-300">50.62</span>
+              </td>
+              <td class="px-3 py-3 text-right tabular-nums text-slate-300">0.4938</td>
+              <td class="px-3 py-3 text-right tabular-nums">
+                <div class="font-medium text-slate-100">0.2500</div>
+                <div class="text-[11px] text-slate-400">IC95 [0.112, 0.469]</div>
+              </td>
+              <td class="px-3 py-3 text-right tabular-nums text-slate-300">[0.028, 0.301]</td>
+              <td class="px-3 py-3 text-right tabular-nums">
+                <div class="font-medium text-slate-100">[18.64, 66.41]</div>
+                <div class="text-[11px] text-slate-400">&Delta; 47.77 pts</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Recuadro separado para baja precisión muestral -->
+      <div class="mt-5 rounded-xl border border-dashed border-amber-400/70 bg-amber-500/5 p-4">
+        <h3 class="text-xs sm:text-sm font-bold text-amber-300 mb-3">
+          ASNs con Baja Precisión Muestral (H<sub>a</sub> &lt; 15 — Excluidos de Ranking Comparativo e Índice Síntesis)
+        </h3>
+        <div class="overflow-x-auto rounded-lg border border-slate-800/80">
+          <table class="w-full text-left border-collapse text-xs sm:text-sm">
+            <thead>
+              <tr class="bg-slate-800/70 text-slate-300 uppercase text-[11px] tracking-wider">
+                <th class="px-3 py-2.5 font-semibold">ASN (Ofuscado)</th>
+                <th class="px-3 py-2.5 font-semibold">Perfil Sintético</th>
+                <th class="px-3 py-2.5 font-semibold text-right">H<sub>a</sub></th>
+                <th class="px-3 py-2.5 font-semibold">Estabilidad Muestral</th>
+                <th class="px-3 py-2.5 font-semibold text-right">PTS Oficial</th>
+                <th class="px-3 py-2.5 font-semibold text-right">Riesgo</th>
+                <th class="px-3 py-2.5 font-semibold text-right">Conv<sub>a</sub> / IC 95%</th>
+                <th class="px-3 py-2.5 font-semibold text-right">IC 95% COMP</th>
+                <th class="px-3 py-2.5 font-semibold text-right">Sensibilidad [Min, Max]</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="hover:bg-slate-800/30 transition-colors">
+                <td class="px-3 py-3 font-bold text-white whitespace-nowrap">AS-SIM-C</td>
+                <td class="px-3 py-3 text-slate-200">Red Simulada C (Baja Precisión Muestral)</td>
+                <td class="px-3 py-3 text-right tabular-nums font-medium">8</td>
+                <td class="px-3 py-3">
+                  <span class="inline-block rounded-md border border-amber-400/40 bg-amber-500/15 px-2 py-0.5 text-[11px] font-medium text-amber-200">
+                    BAJA_PRECISION (H<sub>a</sub> &lt; 15; excluir de ranking)
+                  </span>
+                </td>
+                <td class="px-3 py-3 text-right tabular-nums">
+                  <span class="inline-block rounded-full bg-orange-500/20 border border-orange-400/30 px-2.5 py-0.5 font-bold text-orange-300">59.12</span>
+                </td>
+                <td class="px-3 py-3 text-right tabular-nums text-slate-300">0.4088</td>
+                <td class="px-3 py-3 text-right tabular-nums">
+                  <div class="font-medium text-slate-100">0.2500</div>
+                  <div class="text-[11px] text-slate-400">IC95 [0.071, 0.591]</div>
+                </td>
+                <td class="px-3 py-3 text-right tabular-nums text-slate-300">[0.000, 0.324]</td>
+                <td class="px-3 py-3 text-right tabular-nums">
+                  <div class="font-medium text-slate-100">[34.96, 74.70]</div>
+                  <div class="text-[11px] text-slate-400">&Delta; 39.74 pts</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filtro interactivo de gráficos (comparables vs todos) -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-xl border border-slate-800 bg-slate-900/90 px-4 py-3">
+      <div class="text-xs sm:text-sm text-slate-300">
+        <span class="font-semibold text-white">Filtro visual de gráficos:</span> alterná entre todos los perfiles simulados o únicamente los comparables (H<sub>a</sub> &ge; 15).
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="btnFilterAll" type="button" class="rounded-lg px-3.5 py-2 text-xs font-semibold bg-sky-500 text-slate-950 shadow transition hover:bg-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400">
+          Todos los perfiles (3)
+        </button>
+        <button id="btnFilterComparable" type="button" class="rounded-lg px-3.5 py-2 text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700 transition hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-400">
+          Solo comparables H<sub>a</sub> &ge; 15 (2)
+        </button>
+      </div>
+    </div>
+
+    <!-- Sección (b): Gráficos de 5 Dimensiones e ISE -->
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="rounded-2xl border border-slate-800 bg-slate-900 p-5 sm:p-6 shadow-lg">
+        <div class="flex items-start justify-between gap-2 mb-3">
+          <div>
+            <h2 class="text-base sm:text-lg font-bold text-white">(b.1) Cinco Dimensiones Normalizadas (D<sub>j,a</sub>)</h2>
+            <p class="text-xs text-slate-400 mt-0.5">Escala [0, 1] anclada al umbral fijo R<sub>j</sub> = 0.25 (1.0 = saturación máxima).</p>
+          </div>
+          <span class="shrink-0 rounded bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold text-amber-300 uppercase">Simulación</span>
+        </div>
+        <div id="wrapDimensions" class="relative h-72 sm:h-80 w-full">
+          <canvas id="chartDimensions"></canvas>
+        </div>
+      </div>
+
+      <div class="rounded-2xl border border-slate-800 bg-slate-900 p-5 sm:p-6 shadow-lg">
+        <div class="flex items-start justify-between gap-2 mb-3">
+          <div>
+            <h2 class="text-base sm:text-lg font-bold text-white">(b.2) Desglose Interno N1–N4 del ISE</h2>
+            <p class="text-xs text-slate-400 mt-0.5">Niveles T&#771;<sub>k,a</sub>: N1 Legado (0.15), N2 Bases de Datos (0.35), N3 Remoto (0.30), N4 OT (0.20).</p>
+          </div>
+          <span class="shrink-0 rounded bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold text-amber-300 uppercase">Simulación</span>
+        </div>
+        <div id="wrapIse" class="relative h-72 sm:h-80 w-full">
+          <canvas id="chartIseLevels"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección (c): Análisis de sensibilidad OCDE -->
+    <section class="rounded-2xl border border-slate-800 bg-slate-900 p-5 sm:p-6 shadow-lg">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
+        <div>
+          <h2 class="text-base sm:text-lg font-bold text-white">(c) Análisis de Sensibilidad OCDE — Rango [PTS<sub>min</sub>, PTS<sub>max</sub>] en 7 Escenarios</h2>
+          <p class="text-xs sm:text-sm text-slate-400 mt-0.5">
+            Evaluación de robustez frente a agregación geométrica vs. lineal, pesos por severidad vs. equiponderados, R &isin; {0.15, 0.25, 0.35} y transformación raíz cuadrada.
+          </p>
+        </div>
+        <span class="self-start rounded bg-amber-500/15 px-2.5 py-0.5 text-[11px] font-bold text-amber-300 uppercase">Datos Sintéticos</span>
+      </div>
+
+      <div id="wrapSensitivity" class="relative h-64 sm:h-72 w-full">
+        <canvas id="chartSensitivity"></canvas>
+      </div>
+
+      <div class="mt-5 overflow-x-auto rounded-xl border border-slate-800">
+        <table class="w-full text-left border-collapse text-xs sm:text-sm">
+          <thead>
+            <tr class="bg-slate-800/80 text-slate-300 uppercase text-[11px] tracking-wider">
+              <th class="px-3 py-3 font-semibold">ASN (Ofuscado)</th>
+              <th class="px-3 py-3 font-semibold text-right">Oficial Geom. R25</th>
+              <th class="px-3 py-3 font-semibold text-right">Geom. Equip. R25</th>
+              <th class="px-3 py-3 font-semibold text-right">Lineal Sev. R25</th>
+              <th class="px-3 py-3 font-semibold text-right">Lineal Equip. R25</th>
+              <th class="px-3 py-3 font-semibold text-right">Geom. R15</th>
+              <th class="px-3 py-3 font-semibold text-right">Geom. R35</th>
+              <th class="px-3 py-3 font-semibold text-right">Geom. Raíz R25</th>
+              <th class="px-3 py-3 font-semibold text-right">Rango [Min, Max]</th>
+              <th class="px-3 py-3 font-semibold text-right">Amplitud</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800 tabular-nums">
+            <tr class="hover:bg-slate-800/40">
+              <td class="px-3 py-2.5 font-bold text-white">AS-SIM-B</td>
+              <td class="px-3 py-2.5 text-right font-semibold text-rose-300">32.18</td>
+              <td class="px-3 py-2.5 text-right">44.47</td>
+              <td class="px-3 py-2.5 text-right text-amber-300">51.96</td>
+              <td class="px-3 py-2.5 text-right">63.54</td>
+              <td class="px-3 py-2.5 text-right">23.23</td>
+              <td class="px-3 py-2.5 text-right">43.90</td>
+              <td class="px-3 py-2.5 text-right">25.67</td>
+              <td class="px-3 py-2.5 text-right font-medium">[23.23, 63.54]</td>
+              <td class="px-3 py-2.5 text-right text-slate-400">40.31</td>
+            </tr>
+            <tr class="hover:bg-slate-800/40">
+              <td class="px-3 py-2.5 font-bold text-white">AS-SIM-A</td>
+              <td class="px-3 py-2.5 text-right font-semibold text-orange-300">50.62</td>
+              <td class="px-3 py-2.5 text-right">48.68</td>
+              <td class="px-3 py-2.5 text-right text-amber-300">55.48</td>
+              <td class="px-3 py-2.5 text-right">54.27</td>
+              <td class="px-3 py-2.5 text-right">18.64</td>
+              <td class="px-3 py-2.5 text-right">66.41</td>
+              <td class="px-3 py-2.5 text-right">31.41</td>
+              <td class="px-3 py-2.5 text-right font-medium">[18.64, 66.41]</td>
+              <td class="px-3 py-2.5 text-right text-slate-400">47.77</td>
+            </tr>
+            <tr class="hover:bg-slate-800/40">
+              <td class="px-3 py-2.5 font-bold text-white">AS-SIM-C <span class="text-[10px] font-normal text-amber-300">(H<sub>a</sub>&lt;15)</span></td>
+              <td class="px-3 py-2.5 text-right font-semibold text-orange-300">59.12</td>
+              <td class="px-3 py-2.5 text-right">62.01</td>
+              <td class="px-3 py-2.5 text-right text-amber-300">70.67</td>
+              <td class="px-3 py-2.5 text-right">72.33</td>
+              <td class="px-3 py-2.5 text-right">34.96</td>
+              <td class="px-3 py-2.5 text-right">74.70</td>
+              <td class="px-3 py-2.5 text-right">44.42</td>
+              <td class="px-3 py-2.5 text-right font-medium">[34.96, 74.70]</td>
+              <td class="px-3 py-2.5 text-right text-slate-400">39.74</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Sección (d): Hallazgos y Declaración Metodológica -->
+    <section class="rounded-2xl border border-slate-800 bg-slate-900 p-5 sm:p-6 shadow-lg">
+      <h2 class="text-base sm:text-lg font-bold text-white mb-4">(d) Hallazgos Demostrativos y Declaración Metodológica</h2>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Columna izquierda: hallazgos sintéticos -->
+        <div class="space-y-4">
+          <div>
+            <h3 class="text-sm font-bold uppercase tracking-wider text-sky-300 mb-2">
+              Comportamiento Verificado sobre Datos Sintéticos
+            </h3>
+            <ul class="space-y-2 text-xs sm:text-sm text-slate-300 list-disc pl-5">
+              <li>
+                <strong>Efecto no compensatorio (AS-SIM-B):</strong> Con saturación en compromiso activo (D<sub>COMP</sub> = 1.00, &ge; 25% de hosts), la media geométrica acotada penaliza el puntaje a <strong>32.18</strong> frente a <strong>51.96</strong> bajo agregación lineal.
+              </li>
+              <li>
+                <strong>Postura intermedia multi-nivel (AS-SIM-A):</strong> Exhibe una exposición combinada dominada por obsolescencia (D<sub>OBS</sub> = 0.80) y vulnerabilidades ponderadas (D<sub>VULN</sub> = 0.57), obteniendo <strong>50.62 / 100</strong> sobre H<sub>a</sub> = 20 hosts simulados.
+              </li>
+              <li>
+                <strong>Convergencia estructural:</strong> Los tres perfiles sintéticos mantienen una tasa de convergencia Conv<sub>a</sub> = 0.2500 entre exposición ISE y hallazgos de VULN o COMP.
+              </li>
+              <li>
+                <strong>Resguardo de precisión muestral (AS-SIM-C):</strong> Al contar con H<sub>a</sub> = 8 (&lt; 15), el motor lo segrega automáticamente del ranking comparativo y del índice síntesis, reportando su intervalo de confianza de Wilson al 95%.
+              </li>
+              <li>
+                <strong>Tratamiento de honeypots:</strong> 1 host simulado etiquetado como <em>honeypot</em> en AS-SIM-A se conserva en H<sub>a</sub> y en los conteos generales conforme a las reglas de Fase 1.
+              </li>
+            </ul>
+          </div>
+
+          <div class="rounded-xl border border-slate-800 bg-slate-950/60 p-4">
+            <span class="inline-block rounded bg-sky-500/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-sky-300 mb-2">
+              Síntesis Determinista (Entorno de Demostración)
+            </span>
+            <p class="text-xs sm:text-sm text-slate-400">
+              En corridas reales dentro del laboratorio, este módulo incorpora de forma local (on-premise, sin transferencia de metadatos a servicios externos en la nube) un informe narrativo de priorización defensiva.
+            </p>
+          </div>
+        </div>
+
+        <!-- Columna derecha: declaración metodológica limpia -->
+        <div class="rounded-r-xl border-l-4 border-sky-400 bg-sky-500/5 p-4 sm:p-5 text-xs sm:text-sm text-slate-300 space-y-3">
+          <h3 class="text-sm font-bold text-white">
+            Declaración Metodológica, Privacidad y Limitaciones
+          </h3>
+          <ul class="space-y-2.5 list-disc pl-5">
+            <li>
+              <strong>Naturaleza de este reporte:</strong> Archivo de demostración generado exclusivamente con datos sintéticos e identificadores ofuscados (<code>AS-SIM-A</code>, <code>AS-SIM-B</code>, <code>AS-SIM-C</code>). No contiene direcciones IP, nombres de dominio, banners ni vulnerabilidades reales.
+            </li>
+            <li>
+              <strong>Cobertura pasiva no uniforme:</strong> En mediciones reales, los resultados describen únicamente la infraestructura visible e indexada pasivamente en la fecha de corte UTC; variaciones entre ASN pueden reflejar diferencias en cobertura de escaneo además de exposición real.
+            </li>
+            <li>
+              <strong>Consulta BGP exacta por ASN:</strong> En producción, las búsquedas por Sistema Autónomo utilizan estrictamente filtros BGP numéricos verificados en registros regionales (LACNIC), evitando filtros textuales por nombre de organización para impedir homonimias internacionales.
+            </li>
+            <li>
+              <strong>Deduplicación y ponderación VULN:</strong> Cada host único se contabiliza una sola vez según su vulnerabilidad pasiva de mayor severidad CVSS v3 (Crítica 1.00, Alta 0.60, Media 0.20, Baja 0.05).
+            </li>
+            <li>
+              <strong>Marco legal y divulgación responsable:</strong> Operación 100% pasiva (Art. 153 bis CP, Ley 25.326). La socialización externa se limita estrictamente a indicadores agregados, canalizando hallazgos críticos reales por vías institucionales de respuesta a incidentes.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pie de página -->
+    <footer class="text-center text-xs text-slate-500 pb-4">
+      InCA Fase 1 · Prototipo Metodológico Autocontenido · Datos 100% Sintéticos y Ofuscados para Demostración
+    </footer>
+  </div>
+
+  <!-- Bloque de datos sintéticos embebido (100% ofuscado, sin entidades ni rutas reales) -->
+  <script id="inca-data" type="application/json">
+    {
+      "simulation": true,
+      "asns": [
+        {
+          "asn": "AS-SIM-B",
+          "nombre": "Red Simulada B (Compromiso Crítico Concentrado)",
+          "H_activos": 16,
+          "comparable": true,
+          "PTS_oficial": 32.18,
+          "tasa_convergencia": 0.25,
+          "D_normalizadas": { "ISE": 0.0896, "OBS": 0.25, "CRIPTO": 0.0, "VULN": 0.5, "COMP": 1.0 },
+          "ISE_niveles_norm": { "N1": 0.0, "N2": 0.0417, "N3": 0.25, "N4": 0.0 },
+          "sensibilidad": {
+            "rango_PTS": [23.23, 63.54],
+            "amplitud": 40.31,
+            "detalle_escenarios": {
+              "oficial_geom_severidad_R25": 32.18,
+              "sens_geom_equiponderado_R25": 44.47,
+              "sens_lineal_severidad_R25": 51.96,
+              "sens_lineal_equiponderado_R25": 63.54,
+              "sens_geom_severidad_R15_estricto": 23.23,
+              "sens_geom_severidad_R35_laxo": 43.9,
+              "sens_geom_severidad_R25_raiz": 25.67
+            }
+          }
+        },
+        {
+          "asn": "AS-SIM-A",
+          "nombre": "Red Simulada A (Postura Intermedia Multi-Nivel)",
+          "H_activos": 20,
+          "comparable": true,
+          "PTS_oficial": 50.62,
+          "tasa_convergencia": 0.25,
+          "D_normalizadas": { "ISE": 0.1133, "OBS": 0.8, "CRIPTO": 0.4, "VULN": 0.57, "COMP": 0.4 },
+          "ISE_niveles_norm": { "N1": 0.2, "N2": 0.0667, "N3": 0.2, "N4": 0.0 },
+          "sensibilidad": {
+            "rango_PTS": [18.64, 66.41],
+            "amplitud": 47.77,
+            "detalle_escenarios": {
+              "oficial_geom_severidad_R25": 50.62,
+              "sens_geom_equiponderado_R25": 48.68,
+              "sens_lineal_severidad_R25": 55.48,
+              "sens_lineal_equiponderado_R25": 54.27,
+              "sens_geom_severidad_R15_estricto": 18.64,
+              "sens_geom_severidad_R35_laxo": 66.41,
+              "sens_geom_severidad_R25_raiz": 31.41
+            }
+          }
+        },
+        {
+          "asn": "AS-SIM-C",
+          "nombre": "Red Simulada C (Baja Precisión Muestral)",
+          "H_activos": 8,
+          "comparable": false,
+          "PTS_oficial": 59.12,
+          "tasa_convergencia": 0.25,
+          "D_normalizadas": { "ISE": 0.0917, "OBS": 0.5, "CRIPTO": 0.0, "VULN": 0.8, "COMP": 0.0 },
+          "ISE_niveles_norm": { "N1": 0.0, "N2": 0.0833, "N3": 0.125, "N4": 0.125 },
+          "sensibilidad": {
+            "rango_PTS": [34.96, 74.7],
+            "amplitud": 39.74,
+            "detalle_escenarios": {
+              "oficial_geom_severidad_R25": 59.12,
+              "sens_geom_equiponderado_R25": 62.01,
+              "sens_lineal_severidad_R25": 70.67,
+              "sens_lineal_equiponderado_R25": 72.33,
+              "sens_geom_severidad_R15_estricto": 34.96,
+              "sens_geom_severidad_R35_laxo": 74.7,
+              "sens_geom_severidad_R25_raiz": 44.42
+            }
+          }
+        }
+      ]
+    }
+  </script>
+
+  <!-- Inicialización de gráficos Chart.js con soporte de filtro y manejo de errores -->
+  <script>
+    (function () {
+      const payload = JSON.parse(document.getElementById("inca-data").textContent);
+      const allAsns = payload.asns || [];
+
+      const dimPalette = [
+        { key: "COMP", label: "COMP (0.30)", color: "rgba(244, 63, 94, 0.85)" },
+        { key: "VULN", label: "VULN (0.25)", color: "rgba(249, 115, 22, 0.85)" },
+        { key: "ISE", label: "ISE (0.20)", color: "rgba(56, 189, 248, 0.85)" },
+        { key: "OBS", label: "OBS (0.15)", color: "rgba(234, 179, 8, 0.85)" },
+        { key: "CRIPTO", label: "CRIPTO (0.10)", color: "rgba(168, 85, 247, 0.85)" }
+      ];
+
+      const iseLevels = [
+        { key: "N1", label: "N1 Legado (0.15)", color: "rgba(56, 189, 248, 0.85)" },
+        { key: "N2", label: "N2 Bases de Datos (0.35)", color: "rgba(244, 63, 94, 0.85)" },
+        { key: "N3", label: "N3 Acceso Remoto (0.30)", color: "rgba(245, 158, 11, 0.85)" },
+        { key: "N4", label: "N4 Industrial / OT (0.20)", color: "rgba(16, 185, 129, 0.85)" }
+      ];
+
+      let chartDim = null;
+      let chartIse = null;
+      let chartSens = null;
+
+      function showOfflineFallback(containerId) {
+        const el = document.getElementById(containerId);
+        if (!el) return;
+        el.innerHTML =
+          '<div class="flex h-full items-center justify-center rounded-xl border border-slate-800 bg-slate-950/60 p-6 text-center text-xs text-slate-400">' +
+          'No se pudo cargar la librería de gráficos (entorno sin conexión). Los valores completos permanecen disponibles en las tablas superiores e inferiores.' +
+          '</div>';
+      }
+
+      function renderCharts(onlyComparable) {
+        if (typeof Chart === "undefined") {
+          showOfflineFallback("wrapDimensions");
+          showOfflineFallback("wrapIse");
+          showOfflineFallback("wrapSensitivity");
+          return;
+        }
+
+        const asns = onlyComparable ? allAsns.filter(a => a.comparable) : allAsns;
+        const labels = asns.map(a => a.asn + " (H_a=" + a.H_activos + ")");
+
+        Chart.defaults.color = "#cbd5e1";
+        Chart.defaults.borderColor = "#1e293b";
+        Chart.defaults.font.family = "Inter, system-ui, sans-serif";
+
+        if (chartDim) chartDim.destroy();
+        if (chartIse) chartIse.destroy();
+        if (chartSens) chartSens.destroy();
+
+        // 1. Gráfico de 5 dimensiones normalizadas
+        chartDim = new Chart(document.getElementById("chartDimensions"), {
+          type: "bar",
+          data: {
+            labels,
+            datasets: dimPalette.map(d => ({
+              label: d.label,
+              data: asns.map(a => (a.D_normalizadas || {})[d.key] || 0),
+              backgroundColor: d.color,
+              borderRadius: 5
+            }))
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: "bottom", labels: { boxWidth: 12, padding: 14 } }
+            },
+            scales: {
+              y: {
+                min: 0,
+                max: 1.0,
+                title: { display: true, text: "D_normalizada [0, 1]" },
+                grid: { color: "rgba(51, 65, 85, 0.45)" }
+              },
+              x: { grid: { display: false } }
+            }
+          }
+        });
+
+        // 2. Gráfico de desglose N1-N4 del ISE
+        chartIse = new Chart(document.getElementById("chartIseLevels"), {
+          type: "bar",
+          data: {
+            labels,
+            datasets: iseLevels.map(l => ({
+              label: l.label,
+              data: asns.map(a => (a.ISE_niveles_norm || {})[l.key] || 0),
+              backgroundColor: l.color,
+              borderRadius: 5
+            }))
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: "bottom", labels: { boxWidth: 12, padding: 14 } }
+            },
+            scales: {
+              y: {
+                min: 0,
+                max: 1.0,
+                title: { display: true, text: "Nivel T_tilde [0, 1]" },
+                grid: { color: "rgba(51, 65, 85, 0.45)" }
+              },
+              x: { grid: { display: false } }
+            }
+          }
+        });
+
+        // 3. Gráfico de rango de sensibilidad OCDE
+        const sensRanges = asns.map(a => {
+          const r = (a.sensibilidad || {}).rango_PTS || [a.PTS_oficial, a.PTS_oficial];
+          return [r[0], r[1]];
+        });
+        const ptsOficial = asns.map((a, i) => ({ x: a.PTS_oficial, y: labels[i] }));
+        const ptsLineal = asns.map((a, i) => ({
+          x: ((a.sensibilidad || {}).detalle_escenarios || {}).sens_lineal_severidad_R25 ?? a.PTS_oficial,
+          y: labels[i]
+        }));
+
+        chartSens = new Chart(document.getElementById("chartSensitivity"), {
+          data: {
+            labels,
+            datasets: [
+              {
+                type: "bar",
+                label: "Rango Sensibilidad [PTS_min, PTS_max]",
+                data: sensRanges,
+                backgroundColor: "rgba(56, 189, 248, 0.30)",
+                borderColor: "rgba(56, 189, 248, 0.90)",
+                borderWidth: 1.5,
+                borderSkipped: false,
+                borderRadius: 4,
+                barPercentage: 0.45
+              },
+              {
+                type: "line",
+                label: "PTS Oficial (Geométrica Acotada)",
+                data: ptsOficial,
+                showLine: false,
+                backgroundColor: "#f43f5e",
+                borderColor: "#ffffff",
+                borderWidth: 1.5,
+                pointRadius: 7
+              },
+              {
+                type: "line",
+                label: "Lineal Severidad (R=0.25)",
+                data: ptsLineal,
+                showLine: false,
+                backgroundColor: "#facc15",
+                borderColor: "#0f172a",
+                borderWidth: 1.5,
+                pointStyle: "rectRot",
+                pointRadius: 7
+              }
+            ]
+          },
+          options: {
+            indexAxis: "y",
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { position: "bottom", labels: { boxWidth: 12, padding: 14 } }
+            },
+            scales: {
+              x: {
+                type: "linear",
+                min: 0,
+                max: 100,
+                title: { display: true, text: "Puntaje PTS [0, 100]" },
+                grid: { color: "rgba(51, 65, 85, 0.45)" }
+              },
+              y: { type: "category", grid: { display: false } }
+            }
+          }
+        });
+      }
+
+      // Controles interactivos de filtro
+      const btnAll = document.getElementById("btnFilterAll");
+      const btnComp = document.getElementById("btnFilterComparable");
+
+      function setActiveButton(activeBtn, inactiveBtn) {
+        activeBtn.className =
+          "rounded-lg px-3.5 py-2 text-xs font-semibold bg-sky-500 text-slate-950 shadow transition hover:bg-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-400";
+        inactiveBtn.className =
+          "rounded-lg px-3.5 py-2 text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700 transition hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-400";
+      }
+
+      btnAll.addEventListener("click", function () {
+        setActiveButton(btnAll, btnComp);
+        renderCharts(false);
+      });
+
+      btnComp.addEventListener("click", function () {
+        setActiveButton(btnComp, btnAll);
+        renderCharts(true);
+      });
+
+      window.addEventListener("load", function () {
+        try {
+          renderCharts(false);
+        } catch (err) {
+          console.error("Error renderizando gráficos de demostración:", err);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
